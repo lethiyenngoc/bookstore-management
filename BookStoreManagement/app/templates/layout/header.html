@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">eCommerce Website</a>
+        <a class="navbar-brand" href="#">E-BookStore</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -17,9 +17,19 @@
                 <li class="nav-item">
                     <a class="nav-link introduce" href="/introduce">Giới thiệu</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link category" href="/category">Thể loại</a>
-                </li>
+                <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle " href="/category" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Thể loại
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                          </ul>
+                        </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link category" href="/category">Thể loại</a>-->
+<!--                </li>-->
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link text-danger" href="/">
