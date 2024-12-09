@@ -1,0 +1,9 @@
+body {
+    background-color: white;
+    color: darkblue;
+}
+
+.carousel-inner img {
+  height: 500px;
+  object-fit: cover;
+}
