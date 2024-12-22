@@ -2,75 +2,114 @@
 
 {% block content %}
 <!--Carousel-->
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://demo.tokopress.com/bookie/wp-content/uploads/sites/7/2016/06/slider-03.jpg" class="d-block w-100 mx-auto"  alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>First slide label</h3>
-        <p>Some representative placeholder content for the first slide.</p>
-        <button type="button" class="btn btn-outline-secondary">Secondary</button>
-      </div>
+<div class="container my-3">
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="book-card">
+                    <div class="background-left" style="background-image: url('https://thiennhien247.net/wp-content/uploads/2022/08/song-bien-1.jpg');"></div>
+                    <div class="content-right">
+                        <h5 class="text-uppercase text-muted">World Bestsellers</h5>
+                        <h1 class="fw-bold">Escape Book<br>Charles Fredrick</h1>
+                        <p class="mt-3">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look.</p>
+                        <div class="mt-4">
+                            <button class="btn btn-custom me-3">Thêm vào giỏ hàng</button>
+                            <button class="btn btn-outline-dark">Xem thêm</button>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="https://woodmart.b-cdn.net/wp-content/uploads/2024/02/book-slider-s3-img.png.webp" alt="Book Cover">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="book-card">
+                    <div class="background-left" style="background-image: url('https://lanvipaper.com.vn/wp-content/uploads/2020/09/B.H-1-1024x682.jpg');"></div>
+                    <div class="content-right">
+                        <h5 class="text-uppercase text-muted">World Bestsellers</h5>
+                        <h1 class="fw-bold">Simply Elegant<br>Humbert Jemmy</h1>
+                        <p class="mt-3">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look.</p>
+                        <div class="mt-4">
+                            <button class="btn btn-custom me-3">Thêm vào giỏ hàng</button>
+                            <button class="btn btn-outline-dark">Xem thêm</button>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="https://woodmart.b-cdn.net/wp-content/uploads/2024/02/book-slider-s2-img.png.webp" alt="Book Cover">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="book-card">
+                    <div class="background-left" style="background-image: url('https://i2.ex-cdn.com/crystalbay.com/files/content/2024/07/22/ngam-hoang-hon-phu-quoc-2-1157.jpg');"></div>
+                    <div class="content-right">
+                        <h5 class="text-uppercase text-muted">World Bestsellers</h5>
+                        <h1 class="fw-bold">Venice Guide<br>Mr. Segre Ramelli</h1>
+                        <p class="mt-3">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look.</p>
+                        <div class="mt-4">
+                            <button class="btn btn-custom me-3">Thêm vào giỏ hàng</button>
+                            <button class="btn btn-outline-dark">Xem thêm</button>
+                        </div>
+                    </div>
+                    <div class="book-cover">
+                        <img src="https://woodmart.b-cdn.net/wp-content/uploads/2024/02/book-slider-s1-img.png.webp" alt="Book Cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-    <div class="carousel-item">
-      <img src="https://demo.tokopress.com/bookie/wp-content/uploads/sites/7/2016/06/slider-02.jpg" class="d-block w-100 mx-auto" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Second slide label</h5>
-        <p>Some representative placeholder content for the second slide.</p>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://demo.tokopress.com/bookie/wp-content/uploads/sites/7/2016/06/slider-01.jpg" class="d-block w-100 mx-auto" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Some representative placeholder content for the third slide.</p>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
 </div>
+
 <!--End Carousel-->
 
 <!--Title-->
 <figure class="text-center mt-5">
   <blockquote class="blockquote">
-    <p>A well-known quote, contained in a blockquote element.</p>
+    <h2 class="custom-heading">Sản phẩm nổi bật</h2>
   </blockquote>
   <hr class="border border-danger border-2 opacity-50 mx-auto" style="width: 40%;">
 </figure>
 <!--End Title-->
 
+{% if products %}
 {% if pages > 1 %}
-<ul class="pagination mt-2">
+<ul class="pagination mt-1">
     {% for i in range(1, pages + 1) %}
     <li class="page-item"><a class="page-link" href="/?page={{ i }}">{{ i }}</a></li>
     {% endfor %}
 </ul>
 {% endif %}
 
-{% if products %}
+<div class="d-flex justify-content-end mb-1">
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Sắp xếp theo giá
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+            <li><a class="dropdown-item" href="#" onclick="sortProducts('asc')">Giá tăng dần</a></li>
+            <li><a class="dropdown-item" href="#" onclick="sortProducts('desc')">Giá giảm dần</a></li>
+        </ul>
+    </div>
+</div>
+
 <div class="row">
     {% for p in products %}
     <div class="col-md-3 col-12 p-2">
-        <div class="card shadow-lg p-2 mb-0.8 bg-body rounded">
-            <img class="card-img-top" src="{{ p.image }}" alt="Card image">
+        <div class="card">
+            <img class="card-img-top" src="{{ p.image }}" alt="{{ p.name }}">
             <div class="card-body">
                 <h4 class="card-title">{{ p.name }}</h4>
                 <p class="card-text">{{ p.price }} VNĐ</p>
-                <a href="#" class="btn btn-primary">Xem chi tiết</a>
-                <button class="btn btn-danger booking" onclick="addToCart({{p.id}}, '{{ p.name }}', {{ p.price }})">Đặt hàng</button>
+                <a href="/products/{{ p.id }}" class="btn btn-primary">Xem chi tiết</a>
+                <button class="btn btn-danger" onclick="addToCart({{ p.id }}, '{{ p.name }}', {{ p.price }})">Đặt hàng</button>
             </div>
         </div>
     </div>
@@ -79,13 +118,158 @@
 {% else %}
 <div class="alert alert-info mt-1">KHÔNG có sản phẩm nào.</div>
 {% endif %}
+<div class="d-grid gap-2 col-6 mx-auto my-4">
+  <button class="btn btn-outline-secondary" type="button">Xem thêm</button>
+</div>
 
-<!--Title-->
-<figure class="text-center mt-5">
-  <blockquote class="blockquote">
-    <p>A well-known quote, contained in a blockquote element.</p>
-  </blockquote>
-  <hr class="border border-danger border-2 opacity-50 mx-auto" style="width: 40%;">
-</figure>
-<!--End Title-->
+<div class="container my-5">
+    <h2 class="text-center mb-4 custom-heading">Danh Mục Thể Loại Sách</h2>
+    <div class="d-flex justify-content-center gap-4 flex-wrap">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks('thieuNhi')">
+            <img src="https://cdn0.fahasa.com/media/catalog/product/8/9/8935244868999.jpg?_gl=1*wjtwmp*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODU4Ni4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg1ODcuMTkuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Thiếu Nhi">
+            <div class="card-body text-center">
+                <h5 class="card-title">Thiếu Nhi</h5>
+            </div>
+        </div>
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks('tamLy')">
+            <img src="https://cdn0.fahasa.com/media/catalog/product/8/9/8935278605546.jpg?_gl=1*2k7hhh*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODMxNS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzgzMTcuMzcuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Tâm Lý - Kỹ Năng Sống">
+            <div class="card-body text-center">
+                <h5 class="card-title">Tâm Lý - Kỹ Năng Sống</h5>
+            </div>
+        </div>
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks('kinhTe')">
+            <img src="https://cdn0.fahasa.com/media/catalog/product/b/i/bia-truoc-chien-tranh-tien-te-phan-1-1.jpg?_gl=1*1v7xf61*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODUxNS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg1MTcuMTguMC4yMDI1MzE5NzYy" class="card-img-top" alt="Kinh Tế">
+            <div class="card-body text-center">
+                <h5 class="card-title">Kinh Tế</h5>
+            </div>
+        </div>
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks('vanHoc')">
+            <img src="https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-in-g_c-nh_-c_-n_ng.jpg?_gl=1*17r6hsz*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODE3MS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzgxNzMuNDYuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Văn Học">
+            <div class="card-body text-center">
+                <h5 class="card-title">Văn Học</h5>
+            </div>
+        </div>
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks('ngoaiNgu')">
+            <img src="https://cdn0.fahasa.com/media/catalog/product/9/7/9786043775662.jpg?_gl=1*c7uc1o*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODcwNS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg3MDYuMTQuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Sách Ngoại Ngữ">
+            <div class="card-body text-center">
+                <h5 class="card-title">Sách Ngoại Ngữ</h5>
+            </div>
+        </div>
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks('theLoaiKhac')">
+            <img src="https://cdn0.fahasa.com/media/catalog/product/n/e/nexus-b_a-m_m_1.jpg?_gl=1*11t376c*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODgxMi4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg4MTQuMzcuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Thể Loại Khác">
+            <div class="card-body text-center">
+                <h5 class="card-title">Thể Loại Khác</h5>
+            </div>
+        </div>
+    </div>
+
+
+<div class="container mt-5">
+  <!-- Tiêu đề chính -->
+  <div class="text-center mb-4">
+    <h2 class="custom-heading">Phản hồi từ khách hàng</h2>
+    <p class="custom-subtitle">Cập nhật thông tin khuyến mãi và nhận quyền lợi giảm giá độc quyền</p>
+  </div>
+
+  <!-- Carousel -->
+  <div id="review-carousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row text-center">
+          <!-- Card 1 -->
+          <div class="col-md-4">
+            <div class="card review-card shadow-sm mb-3">
+              <img src="https://cdn.tuoitre.vn/thumb_w/640/471584752817336320/2023/2/2/3011753296292997752203435546344282009293690n-16753281274421365667335.jpg" class="card-img-top rounded-circle mx-auto mt-1" alt="Customer 1" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title">Trần Hồng Hòa</h5>
+                <div class="review-star mb-2">
+                  &#9733;&#9733;&#9733;&#9733;&#9734;
+                </div>
+                <p class="card-text text-muted">Dịch vụ tuyệt vời và chất lượng sách rất tốt!</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="col-md-4">
+            <div class="card review-card shadow-sm mb-3">
+              <img src="https://2sao.vietnamnetjsc.vn/images/2024/11/30/11/50/son-tung-4.jpg" class="card-img-top rounded-circle mx-auto mt-1" alt="Customer 2" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title">Nguyễn Thanh Tùng</h5>
+                <div class="review-star mb-2">
+                  &#9733;&#9733;&#9733;&#9733;&#9733;
+                </div>
+                <p class="card-text text-muted">Sản phẩm chất lượng, giao hàng nhanh chóng.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="col-md-4">
+            <div class="card review-card shadow-sm mb-3">
+              <img src="https://photo-resize-zmp3.zadn.vn/w360_r1x1_jpeg/avatars/2/2/9/d/229ddca531571154c266a832f513ae2c.jpg" class="card-img-top rounded-circle mx-auto mt-1" alt="Customer 3" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title">Lê Hoàng Phương</h5>
+                <div class="review-star mb-2">
+                  &#9733;&#9733;&#9733;&#9733;&#9734;
+                </div>
+                <p class="card-text text-muted">Nhân viên thân thiện và không gian thoải mái.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row text-center">
+          <!-- Card 4 -->
+          <div class="col-md-4">
+            <div class="card review-card shadow-sm mb-3">
+              <img src="https://images2.thanhnien.vn/528068263637045248/2023/10/9/my-tam-23134-16968245549841589136578.jpg" class="card-img-top rounded-circle mx-auto mt-1" alt="Customer 4" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title">Phạm Thị Ngân</h5>
+                <div class="review-star mb-2">
+                  &#9733;&#9733;&#9733;&#9733;&#9733;
+                </div>
+                <p class="card-text text-muted">Tuyệt vời! Giá cả hợp lý và sách rất đa dạng.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Card 5 -->
+          <div class="col-md-4">
+            <div class="card review-card shadow-sm mb-3">
+              <img src="https://tudienwiki.com/wp-content/uploads/2023/02/ca-si-vu.jpg" class="card-img-top rounded-circle mx-auto mt-1" alt="Customer 5" style="width: 50px; height: 50px; object-fit: cover;">
+              <div class="card-body">
+                <h5 class="card-title">Hoàng Văn Trịnh</h5>
+                <div class="review-star mb-2">
+                  &#9733;&#9733;&#9733;&#9733;&#9734;
+                </div>
+                <p class="card-text text-muted">Rất hài lòng với trải nghiệm mua sắm tại đây.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Điều hướng Carousel -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#review-carousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#review-carousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <!-- Đăng ký Email -->
+  <div class="text-center mt-4">
+    <div class="email-subscribe">
+      <p class="fw-bold mb-2">Nhập địa chỉ email để nhận thông báo khuyến mãi</p>
+      <div class="input-group w-50 mx-auto">
+        <input type="email" class="form-control" placeholder="Email của bạn">
+        <button class="btn btn-primary" type="button">Đăng ký</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

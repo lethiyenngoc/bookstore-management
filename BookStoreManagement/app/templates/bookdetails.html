@@ -1,0 +1,92 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <!-- Hình ảnh sách -->
+    <div class="col-md-5 text-center">
+      <div class="image-zoom-container">
+        <img src="https://product.hstatic.net/200000301138/product/1_568e89b8232f4bb68d8da7770ee114c0_large.jpg" alt="Bìa sách" class="bookdetail-cover image-zoom">
+        <div class="magnifier"></div>
+      </div>
+    </div>
+
+    <!-- Thông tin sách -->
+    <div class="col-md-7">
+      <h2 class="mb-3">Harry Potter Và Chiếc Cốc Lửa</h2>
+      <ul class="list-unstyled mb-3">
+        <li><strong>Tác giả:</strong> J.K. Rowling</li>
+        <li><strong>Nhà xuất bản:</strong> NXB Trẻ</li>
+        <li><strong>Người dịch:</strong> Lý Lan</li>
+        <li><strong>Số trang:</strong> 924</li>
+        <li><strong>Hình thức:</strong> Bìa mềm</li>
+        <li><strong>Kích thước:</strong> 14 x 20 cm</li>
+      </ul>
+      <p class="price">310.000đ</p>
+
+      <!-- Phần số lượng -->
+      <div class="quantity-controls">
+        <button id="decrease-quantity">-</button>
+        <input type="number" id="quantity" value="1" min="1">
+        <button id="increase-quantity">+</button>
+      </div>
+
+      <div class="d-flex mt-3">
+        <button class="btn btn-buy me-3 px-4">Mua ngay</button>
+        <button class="btn btn-outline-secondary px-4">Thêm vào giỏ hàng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="mt-5">
+    <ul class="nav nav-tabs" id="bookTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Giới thiệu sách</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="shipping-tab" data-bs-toggle="tab" data-bs-target="#shipping" type="button" role="tab" aria-controls="shipping" aria-selected="false">Hướng dẫn đặt hàng và vận chuyển</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Đánh giá sách</button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3 mb-5">
+      <!-- Giới thiệu sách -->
+      <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+        <h5>Các ưu điểm của cuốn sách:</h5>
+        <ul>
+          <li>Tổng ôn 25 đề then chốt môn Tiếng Việt.</li>
+          <li>Kiến thức chuẩn theo chương trình của Bộ Giáo Dục.</li>
+          <li>Các dạng bài tập đa dạng, phù hợp với học sinh lớp 5.</li>
+          <li>Giải chi tiết giúp tự học hiệu quả tại nhà.</li>
+        </ul>
+      </div>
+
+      <!-- Hướng dẫn đặt hàng -->
+      <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+        <h5>Hướng dẫn đặt hàng và vận chuyển:</h5>
+        <p>Giao hàng sau khi đặt từ 1-3 ngày tùy khu vực.</p>
+        <ul>
+          <li>TP.HCM: 1-2 ngày</li>
+          <li>Miền Nam: 2-3 ngày</li>
+          <li>Miền Bắc: 3-5 ngày</li>
+        </ul>
+      </div>
+
+      <!-- Đánh giá sách -->
+      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        <h5>Đánh giá từ khách hàng:</h5>
+        <div>
+          <div class="d-flex align-items-center mb-2">
+            <span class="text-warning me-2">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <small class="text-muted">4/5</small>
+          </div>
+          <p>"Cuốn sách rất thú vị và bổ ích. Nội dung hấp dẫn, phù hợp với mọi lứa tuổi."</p>
+          <p class="text-muted">- Nguyễn Văn B, 2 tuần trước</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}

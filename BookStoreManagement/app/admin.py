@@ -1,13 +1,17 @@
-from app import db, app
-from flask_admin import Admin
+from app import db, app, dao
+from flask_admin import Admin, BaseView, expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from app.models import Category, Product, User, UserRole
 from flask_login import current_user, logout_user
 from flask_admin import BaseView, expose
 from flask import redirect
 
-admin = Admin(app, name='ecourseapp', template_mode='bootstrap4')
+class MyAdminIndexView(AdminIndexView):
+    @expose("/")
+    def index(self):
+        return self.render('admin/index.html', stats=dao.count_products_by_cate())
 
+admin = Admin(app=app, name='E-BOOKSTORE', template_mode='bootstrap4', index_view=MyAdminIndexView())
 
 class AuthenticatedView(ModelView):
     def is_accessible(self):
@@ -43,8 +47,9 @@ class StatsView(MyView):
     @expose("/")
     def index(self):
 
-        return self.render('admin/stats.html')
-
+        return self.render('admin/stats.html',
+                           stats=dao.revenue_stats_by_products(),
+                           stats2=dao.revenue_stats_by_time())
 
 admin.add_view(CategoryView(Category, db.session))
 admin.add_view(ProductView(Product, db.session))

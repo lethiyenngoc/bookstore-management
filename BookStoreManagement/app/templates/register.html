@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-<h1 class="text-center text-success mt-1">ĐĂNG KÝ NGƯỜI DÙNG</h1>
+<h1 class="text-center text-success mt-3">ĐĂNG KÝ NGƯỜI DÙNG</h1>
 
 {% if err_msg %}
 <div class="alert alert-danger">{{err_msg}}</div>
@@ -33,6 +33,6 @@
         <label for="avatar">Ảnh đại diện</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Đăng ký</button>
+    <button type="submit" class="btn btn-primary mb-5">Đăng ký</button>
 </form>
 {% endblock %}
