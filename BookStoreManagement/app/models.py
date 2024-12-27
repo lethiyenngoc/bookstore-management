@@ -1,6 +1,7 @@
+import hashlib
 import random
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Enum, DateTime, Boolean
 from app import db, app
 from enum import Enum as RoleEnum
 from flask_login import UserMixin
@@ -45,7 +46,9 @@ class Product(db.Model):
     size = Column(String(20), nullable=True)
     image = Column(String(255), nullable=True)
     price = Column(Float, nullable=False, default=0)
+    quantity = Column(Integer, nullable=False, default=0)
     category_id = Column(Integer, ForeignKey(Category.id), nullable=False)
+    entry_date = Column(DateTime, default=datetime.now, nullable=False)  # Thêm ngày nhập
     details = relationship('ReceiptDetails', backref='product', lazy=True)
     comments = relationship('Comment', backref='product', lazy=True)
 
@@ -55,16 +58,31 @@ class Product(db.Model):
 class Receipt(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    created_date = Column(DateTime, default=datetime.now())
+    created_date = Column(DateTime, default=datetime.now, nullable=False)
+    payment_method = Column(String(50), nullable=False, default='cash')  # 'cash' hoặc 'vnpay'
+    is_canceled = Column(Boolean, default=False)  # Trạng thái hủy
+    total_amount = Column(Float, nullable=False, default=0)  # Tổng tiền hóa đơn
     details = relationship('ReceiptDetails', backref='receipt', lazy=True)
-
 
 class ReceiptDetails(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     quantity = Column(Integer, default=0)
     unit_price = Column(Float, default=0)
+    total_price = Column(Float, nullable=False, default=0)  # Tổng tiền của mỗi chi tiết
     product_id = Column(Integer, ForeignKey(Product.id), nullable=False)
     receipt_id = Column(Integer, ForeignKey(Receipt.id), nullable=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.total_price = self.quantity * self.unit_price
+
+
+# class ReceiptDetails(db.Model):
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     quantity = Column(Integer, default=0)
+#     unit_price = Column(Float, default=0)
+#     product_id = Column(Integer, ForeignKey(Product.id), nullable=False)
+#     receipt_id = Column(Integer, ForeignKey(Receipt.id), nullable=False)
 
 class Comment(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -72,16 +90,17 @@ class Comment(db.Model):
     created_date = Column(DateTime, default=datetime.now())
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     product_id = Column(Integer, ForeignKey(Product.id), nullable=False)
+    rating = Column(Integer, nullable=False)  # Giá trị đánh giá sao (1-5)
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        #
+
         # u = User(name='admin', username='admin', password=str(hashlib.md5('123456'.encode('utf-8')).hexdigest()),
         #          user_role=UserRole.ADMIN)
         # db.session.add(u)
         # db.session.commit()
-        #
+
         # c1 = Category(name='Thiếu nhi')
         # c2 = Category(name='Tâm lý - Kỹ năng sống')
         # c3 = Category(name='Kinh tế')
@@ -91,12 +110,6 @@ if __name__ == '__main__':
         # db.session.add_all([c1, c2, c3, c4, c5, c6])
         # db.session.commit()
 
-        c1 = Comment(content='good', user_id=1, product_id=1)
-        c2 = Comment(content='excellent', user_id=1, product_id=1)
-        c3 = Comment(content='nice', user_id=1, product_id=1)
-
-        db.session.add_all([c1, c2, c3])
-        db.session.commit()
 
         # data = [
         #     # Thiếu nhi
@@ -111,7 +124,9 @@ if __name__ == '__main__':
         #         "size": "20x20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734836607/98f6110a-289f-4f94-833b-f2119a195a5d.png",
         #         "price": 50000,
-        #         "category_id": 1
+        #         "quantity": 200,
+        #         "category_id": 1,
+        #         'end_date': 2024-12-24
         #     },
         #     {
         #         "name": "Tấm Cám",
@@ -124,6 +139,7 @@ if __name__ == '__main__':
         #         "size": "22x22 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734836687/2212e62a-0c52-4de0-ad4a-d53b330c4cf4.png",
         #         "price": 60000,
+        #         "quantity": 500,
         #         "category_id": 1
         #     },
         #     {
@@ -137,6 +153,7 @@ if __name__ == '__main__':
         #         "size": "20x20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734836724/efcba5a7-7099-445a-a181-45cbb3e363dd.png",
         #         "price": 55000,
+        #         "quantity": 100,
         #         "category_id": 1
         #     },
         #     {
@@ -150,6 +167,7 @@ if __name__ == '__main__':
         #         "size": "22x22 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734836806/042b002d-e604-40bb-8b8b-8485b86b01bb.png",
         #         "price": 65000,
+        #         "quantity": 250,
         #         "category_id": 1
         #     },
         #     {
@@ -163,6 +181,7 @@ if __name__ == '__main__':
         #         "size": "20x20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837246/6f0f0cc4-0924-4262-9790-aae5f1240604.png",
         #         "price": 50000,
+        #         "quantity": 200,
         #         "category_id": 1
         #     },
         #     {
@@ -176,6 +195,7 @@ if __name__ == '__main__':
         #         "size": "22x22 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837321/d7fc3a9e-0f00-429b-b974-89d38db09fec.png",
         #         "price": 60000,
+        #         "quantity": 800,
         #         "category_id": 1
         #     },
         #     {
@@ -189,6 +209,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837400/7026dfef-17d3-4600-b994-2abeb21d7bf6.png",
         #         "price": 70000,
+        #         "quantity": 200,
         #         "category_id": 1
         #     },
         #     {
@@ -202,6 +223,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837433/36ed2eb0-abe9-426f-a377-3cc782f11c02.png",
         #         "price": 85000,
+        #         "quantity": 208,
         #         "category_id": 1
         #     },
         #
@@ -217,6 +239,7 @@ if __name__ == '__main__':
         #         "size": "13x20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837470/c1a131c8-3a48-4c56-a3b0-995d581043eb.png",
         #         "price": 120000,
+        #         "quantity": 150,
         #         "category_id": 2
         #     },
         #     {
@@ -230,6 +253,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837530/bfb32a5c-eb26-49fb-a93d-78ec579ce585.png",
         #         "price": 110000,
+        #         "quantity": 300,
         #         "category_id": 2
         #     },
         #     {
@@ -243,6 +267,7 @@ if __name__ == '__main__':
         #         "size": "13x20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837568/c95a1627-a222-4824-8e51-868d14fb17ec.png",
         #         "price": 130000,
+        #         "quantity": 751,
         #         "category_id": 2
         #     },
         #     {
@@ -256,6 +281,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837864/z3090981454074_8481377637fc109522f0dd857e2c3794_deuacv.jpg",
         #         "price": 115000,
+        #         "quantity": 270,
         #         "category_id": 2
         #     },
         #     {
@@ -269,6 +295,7 @@ if __name__ == '__main__':
         #         "size": "15x23 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837892/image_244718_1_1844_mxvshk.jpg",
         #         "price": 140000,
+        #         "quantity": 600,
         #         "category_id": 2
         #     },
         #     {
@@ -282,6 +309,7 @@ if __name__ == '__main__':
         #         "size": "13x20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734837956/vvvvvvvvvvvv_rfbmbj.webp",
         #         "price": 125000,
+        #         "quantity": 790,
         #         "category_id": 2
         #     },
         #     {
@@ -295,6 +323,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734838045/nghe_thuat_tu_duy_ranh_mach_u2487_d20161129_t103616_398639_550x550_xrysjg.webp",
         #         "price": 135000,
+        #         "quantity": 452,
         #         "category_id": 2
         #     },
         #     {
@@ -308,6 +337,7 @@ if __name__ == '__main__':
         #         "size": "15x23 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734838076/image_195509_1_45380_ckqbu5.webp",
         #         "price": 150000,
+        #         "quantity": 200,
         #         "category_id": 2
         #     },
         #     # Kinh tế
@@ -322,6 +352,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734838852/250f52e2-601b-435e-b17c-732723950ef5.png",
         #         "price": 200000,
+        #         "quantity": 500,
         #         "category_id": 3
         #     },
         #     {
@@ -335,6 +366,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734839324/image_222946_sijjkf.webp",
         #         "price": 250000,
+        #         "quantity": 500,
         #         "category_id": 3
         #     },
         #     {
@@ -348,6 +380,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734839355/9786044872643_1_c7tv8z.webp",
         #         "price": 300000,
+        #         "quantity": 500,
         #         "category_id": 3
         #     },
         #     {
@@ -361,6 +394,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734839418/image_219967_trgigh.webp",
         #         "price": 180000,
+        #         "quantity": 500,
         #         "category_id": 3
         #     },
         #     {
@@ -374,6 +408,7 @@ if __name__ == '__main__':
         #         "size": "15x23 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734839460/nxbtre_full_05132018_031305_wyjqoy.webp",
         #         "price": 220000,
+        #         "quantity": 500,
         #         "category_id": 3
         #     },
         #     {
@@ -387,6 +422,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734840172/8936066697088_w8w3up.webp",
         #         "price": 240000,
+        #         "quantity": 700,
         #         "category_id": 3
         #     },
         #     {
@@ -400,6 +436,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734841414/nghe-thuat-thuong-thuyet-a.jpg_tz3ane.webp",
         #         "price": 200000,
+        #         "quantity": 700,
         #         "category_id": 3
         #     },
         #     {
@@ -413,6 +450,7 @@ if __name__ == '__main__':
         #         "size": "15x23 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734841565/a3ae47c0-8d87-4cd5-9473-6820d42d2300.png",
         #         "price": 230000,
+        #         "quantity": 700,
         #         "category_id": 3
         #     },
         #
@@ -428,6 +466,7 @@ if __name__ == '__main__':
         #         "size": "15x22 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734841649/image_229223_gxhrt9.webp",
         #         "price": 150000,
+        #         "quantity": 700,
         #         "category_id": 4
         #     },
         #     {
@@ -441,6 +480,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734841795/93f60d52e1f336c6ef6dd4d052347ed1.jpg_txg816.webp",
         #         "price": 350000,
+        #         "quantity": 700,
         #         "category_id": 4
         #     },
         #     {
@@ -454,6 +494,7 @@ if __name__ == '__main__':
         #         "size": "16x24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734841954/a8933db5-a632-44d8-b023-6c416210f83e.png",
         #         "price": 400000,
+        #         "quantity": 400,
         #         "category_id": 4
         #     },
         #     {
@@ -467,6 +508,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734842077/image_195509_1_36793_m2ddie.webp",
         #         "price": 150000,
+        #         "quantity": 400,
         #         "category_id": 4
         #     },
         #     {
@@ -480,6 +522,7 @@ if __name__ == '__main__':
         #         "size": "15x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734842604/ban-chat-cua-nguoi-01_k3kiql.webp",
         #         "price": 120000,
+        #         "quantity": 400,
         #         "category_id": 4
         #     },
         #     {
@@ -493,6 +536,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734842608/so_do_hfu19w.webp",
         #         "price": 130000,
+        #         "quantity": 400,
         #         "category_id": 4
         #     },
         #     {
@@ -506,6 +550,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734842654/mat-biec_bia-mem_in-lan-thu-44_pail8f.webp",
         #         "price": 145000,
+        #         "quantity": 400,
         #         "category_id": 4
         #     },
         #     {
@@ -519,6 +564,7 @@ if __name__ == '__main__':
         #         "size": "14x21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734842682/9786044916972_awvhyi.webp",
         #         "price": 120000,
+        #         "quantity": 400,
         #         "category_id": 4
         #     },
         #     # Sách ngoại ngữ
@@ -533,6 +579,7 @@ if __name__ == '__main__':
         #         "size": "19 x 27 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734843870/9786043775662_nbnojj.webp",
         #         "price": 148500,
+        #         "quantity": 400,
         #         "category_id": 5
         #     },
         #     {
@@ -546,6 +593,7 @@ if __name__ == '__main__':
         #         "size": "19 x 27 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844272/9786045893104_mxehok.webp",
         #         "price": 118500,
+        #         "quantity": 400,
         #         "category_id": 5
         #     },
         #     {
@@ -559,6 +607,7 @@ if __name__ == '__main__':
         #         "size": "19 x 27 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844337/51b92528-97f4-4150-a761-c6cff5a60d98_db4dx1.webp",
         #         "price": 261660,
+        #         "quantity": 400,
         #         "category_id": 5
         #     },
         #     {
@@ -572,6 +621,7 @@ if __name__ == '__main__':
         #         "size": "14.5 x 20.5 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844377/chemta-bino_bia1_ahvunz.webp",
         #         "price": 126750,
+        #         "quantity": 450,
         #         "category_id": 5
         #     },
         #     {
@@ -585,6 +635,7 @@ if __name__ == '__main__':
         #         "size": "19 x 27 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844457/image_230151_rffqro.webp",
         #         "price": 171000,
+        #         "quantity": 450,
         #         "category_id": 5
         #     },
         #     {
@@ -598,6 +649,7 @@ if __name__ == '__main__':
         #         "size": "19 x 27 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844573/9786045864296_zsg6tc.webp",
         #         "price": 162000,
+        #         "quantity": 450,
         #         "category_id": 5
         #     },
         #     {
@@ -611,6 +663,7 @@ if __name__ == '__main__':
         #         "size": "19 x 27 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844723/image_220078_ysxve9.webp",
         #         "price": 340000,
+        #         "quantity": 450,
         #         "category_id": 5
         #     },
         #     {
@@ -624,6 +677,7 @@ if __name__ == '__main__':
         #         "size": "16 x 24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734844831/z5895072395093_970cadac9a946272b9670f43dd00f5ae_mpqxc3.webp",
         #         "price": 269000,
+        #         "quantity": 450,
         #         "category_id": 5
         #     },
         #     # Sách thể loại khác
@@ -638,6 +692,7 @@ if __name__ == '__main__':
         #         "size": "14 x 20.5 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734845933/9786043911107_rlf8nx.webp",
         #         "price": 460000,
+        #         "quantity": 450,
         #         "category_id": 6
         #     },
         #     {
@@ -651,6 +706,7 @@ if __name__ == '__main__':
         #         "size": "14 x 20.5 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734845992/image_225174_kclnht.webp",
         #         "price": 99000,
+        #         "quantity": 450,
         #         "category_id": 6
         #     },
         #     {
@@ -664,6 +720,7 @@ if __name__ == '__main__':
         #         "size": "14 x 20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734846154/c7666f54-142f-43eb-bc26-1126a7155d62.png",
         #         "price": 85000,
+        #         "quantity": 450,
         #         "category_id": 6
         #     },
         #     {
@@ -677,6 +734,7 @@ if __name__ == '__main__':
         #         "size": "15 x 21 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734846192/9786043941555_vgxcjg.webp",
         #         "price": 120000,
+        #         "quantity": 450,
         #         "category_id": 6
         #     },
         #     {
@@ -690,6 +748,7 @@ if __name__ == '__main__':
         #         "size": "14 x 20.5 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734846301/f0507c35-d74e-4fda-959f-e48df6b5084d.png",
         #         "price": 100000,
+        #         "quantity": 450,
         #         "category_id": 6
         #     },
         #     {
@@ -703,6 +762,7 @@ if __name__ == '__main__':
         #         "size": "14 x 20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734846405/3fbe80c6-acf3-41e2-8712-8deba3208ea0.png",
         #         "price": 85000,
+        #         "quantity": 370,
         #         "category_id": 6
         #     },
         #     {
@@ -716,6 +776,7 @@ if __name__ == '__main__':
         #         "size": "16 x 24 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734846463/68231911-ee31-4c91-9fba-d295ea8cbae9.png",
         #         "price": 200000,
+        #         "quantity": 370,
         #         "category_id": 6
         #     },
         #     {
@@ -729,6 +790,7 @@ if __name__ == '__main__':
         #         "size": "14 x 20 cm",
         #         "image": "https://res.cloudinary.com/duumdnwgx/image/upload/v1734846540/anh-sang-tu-trai-tim-bia-4_cbbd1w.webp",
         #         "price": 95000,
+        #         "quantity": 370,
         #         "category_id": 6
         #     }
         # ]
@@ -745,8 +807,16 @@ if __name__ == '__main__':
         #         size=p.get('size'),
         #         image=p['image'],
         #         price=p['price'],
+        #         quantity=p['quantity'],
         #         category_id=p['category_id']
         #     )
         #     db.session.add(prod)
         #
+        # db.session.commit()
+        #
+        # c1 = Comment(content='Good book!', user_id=1, product_id=1, rating=4)
+        # c2 = Comment(content='Excellent!', user_id=1, product_id=1, rating=5)
+        # c3 = Comment(content='Not bad', user_id=2, product_id=1, rating=3)
+        #
+        # db.session.add_all([c1, c2, c3])
         # db.session.commit()

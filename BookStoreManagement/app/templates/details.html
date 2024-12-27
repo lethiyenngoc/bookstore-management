@@ -1,49 +1,129 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-<h1 class="text-center text-success mt-2">CHI TIẾT SẢN PHẨM</h1>
-<div class="row mt-2">
-    <div class="col-md-5 col-6">
-        <img src="{{ product.image }}" class="img-fluid rounded" />
+<div class="container mt-5">
+  <h1 class="text-center text-success mb-4">CHI TIẾT SẢN PHẨM</h1>
+  <div class="row">
+    <!-- Hình ảnh sách -->
+    <div class="col-md-6 text-right">
+      <div class="image-zoom-container">
+        <img src="{{ product.image }}" alt="{{ product.name }}" class="bookdetail-cover image-zoom">
+        <div class="magnifier"></div>
+      </div>
     </div>
-    <div class="col-md-7 col-6">
-        <h1 class="text-info">{{ product.name }}</h1>
-        <h3 class="text-danger">{{ product.price }} VNĐ</h3>
-        <button class="btn btn-danger" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }})">Đặt hàng</button>
+
+    <div class="col-md-4">
+      <!-- Tên sản phẩm -->
+      <h2 class="mb-3 text-primary fw-bold">{{ product.name }}</h2>
+
+      <!-- Danh sách thông tin -->
+      <ul class="list-group mb-3">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <strong>Giá:</strong>
+          <span class="text-danger fw-bold">{{ "{:,.0f}".format(product.price) }} VNĐ</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <strong>Tác giả:</strong>
+          <span>{{ product.author }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <strong>Nhà xuất bản:</strong>
+          <span>{{ product.publisher }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <strong>Số trang:</strong>
+          <span>{{ product.numberpage }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <strong>Hình thức:</strong>
+          <span>{{ product.form }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <strong>Kích thước:</strong>
+          <span>{{ product.size }}</span>
+        </li>
+      </ul>
+
+      <!-- Phần số lượng -->
+      <div class="quantity-controls mb-3 d-flex align-items-center">
+        <button id="decrease-quantity" class="btn btn-outline-secondary btn-sm px-3">-</button>
+        <input type="number" id="quantity" value="1" min="1" class="form-control d-inline mx-2 text-center w-25">
+        <button id="increase-quantity" class="btn btn-outline-secondary btn-sm px-3">+</button>
+      </div>
+
+      <!-- Các nút hành động -->
+      <div class="d-flex gap-3">
+        <button class="btn btn-danger flex-grow-1" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }})">
+          Mua ngay
+        </button>
+      </div>
     </div>
-</div>
 
-{% if current_user.is_authenticated %}
-<div class="mt-2">
-    <textarea class="form-control" rows="5" id="comment" placeholder="Nội dung bình luận..."></textarea>
-    <button class="btn btn-success mt-1" onclick="addComment({{ product.id }})">Thêm bình luận</button>
-</div>
-{% else %}
-<p class="mt-1">Vui lòng <a href="/login?next=/products/{{ product.id }}">đăng nhập</a> để bình luận!</p>
-{% endif %}
 
-<ul class="list-group mt-2" id="comments">
-    {% for c in comments %}
-    <li class="list-group-item">
-        <div class="row">
-            <div class="col-md-1 col-4">
-                <img src="{{ c.user.avatar }}" class="img-fluid rounded-circle" />
-            </div>
-            <div class="col-md-11 col-8">
-                <p>{{ c.content }}</p>
-                <p class="date">{{ c.created_date }}</p>
-            </div>
+  <!-- Tabs -->
+  <div class="mt-5">
+    <ul class="nav nav-tabs" id="bookTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Giới thiệu sách</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Đánh giá sách</button>
+      </li>
+    </ul>
+    <div class="tab-content mt-3 mb-5">
+      <!-- Giới thiệu sách -->
+      <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+        <p>{{ product.description }}</p>
+      </div>
+
+      <!-- Đánh giá sách -->
+      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        <h5>Đánh giá từ khách hàng:</h5>
+        {% if current_user.is_authenticated %}
+        <div class="mt-2">
+          <textarea class="form-control" rows="5" id="comment" placeholder="Nội dung bình luận..."></textarea>
+          <div class="mt-2">
+            <label for="rating" class="form-label">Đánh giá sao:</label>
+            <select id="rating" class="form-select w-auto d-inline-block">
+              <option value="1">1 Sao</option>
+              <option value="2">2 Sao</option>
+              <option value="3">3 Sao</option>
+              <option value="4">4 Sao</option>
+              <option value="5" selected>5 Sao</option>
+            </select>
+          </div>
+          <button class="btn btn-success mt-1" onclick="addComment({{ product.id }})">Thêm bình luận</button>
         </div>
-    </li>
-    {% endfor %}
-</ul>
+        {% else %}
+        <p class="mt-1">Vui lòng <a href="/login?next=/products/{{ product.id }}">đăng nhập</a> để bình luận!</p>
+        {% endif %}
 
-<script>
-    window.onload = function() {
-        let dates = document.getElementsByClassName('date');
-        for (let d of dates)
-            d.innerText = moment(d.innerText).locale("vi").fromNow();
-    }
-</script>
-
+        <ul class="list-group mt-2" id="comments">
+          {% for c in comments %}
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-md-1 col-4">
+                <img src="{{ c.user.avatar }}" class="img-fluid rounded-circle" alt="{{ c.user.name }}">
+              </div>
+              <div class="col-md-11 col-8">
+                <strong>{{ c.user.name }}</strong> <!-- Hiển thị tên người dùng -->
+                <p>{{ c.content }}</p>
+                <p class="mb-1">Đánh giá:
+                  {% for i in range(1, c.rating + 1) %}
+                  <span class="text-warning">&#9733;</span>
+                  {% endfor %}
+                  {% for i in range(c.rating + 1, 6) %}
+                  <span class="text-muted">&#9733;</span>
+                  {% endfor %}
+                </p>
+                <p class="text-muted date">{{ c.created_date }}</p>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

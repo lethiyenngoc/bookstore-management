@@ -4,93 +4,135 @@
 <h1 class="text-center text-danger mt-1">THỐNG KÊ - BÁO CÁO</h1>
 
 <div class="row">
-    <div class="col-md-7 col-12"></div>
-      <div class="col-md-5 col-12">
-        <table class="table">
-            <tr>
-                <th>Id</th>
-                <th>Tên sản phẩm</th>
-                <th>Doanh thu</th>
-            </tr>
-            {% for s in stats %}
-            <tr>
-                <td>{{ s[0] }}</td>
-                <td>{{ s[1] }}</td>
-                <td>{{ s[2] }} VNĐ</td>
-            </tr>
-            {% endfor %}
+    <!-- Báo cáo doanh thu theo tháng -->
+    <div class="col-md-6 col-12">
+        <h3 class="text-center">BÁO CÁO DOANH THU THEO THÁNG</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Thể loại sách</th>
+                    <th>Doanh thu (VNĐ)</th>
+                    <th>Số lượt thuê</th>
+                    <th>Tỷ lệ (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in revenue_by_category %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row['category'] }}</td>
+                    <td>{{ row['revenue'] }}</td>
+                    <td>{{ row['rent_count'] }}</td>
+                    <td>{{ row['percentage'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-right">
+                        Tổng doanh thu: {{ total_revenue }} VNĐ
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
-    <div class="col-md-5 col-12">
-        <canvas id="myChart"></canvas>
+    <div class="col-md-6 col-12">
+        <h3 class="text-center">Biểu đồ doanh thu theo tháng</h3>
+        <canvas id="revenueChart"></canvas>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-5 col-12">
-        <table class="table">
-            <tr>
-                <th>Thời gian</th>
-                <th>Doanh thu</th>
-            </tr>
-            {% for s in stats2 %}
-            <tr>
-                <td>{{ s[0] }}</td>
-                <td>{{ s[1] }} VNĐ</td>
-            </tr>
-            {% endfor %}
+<div class="row mt-4">
+    <!-- Báo cáo tần suất sách bán -->
+    <div class="col-md-6 col-12">
+        <h3 class="text-center">BÁO CÁO TẦN SUẤT SÁCH BÁN</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sách</th>
+                    <th>Thể loại</th>
+                    <th>Số lượng</th>
+                    <th>Tỷ lệ (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in book_frequency %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row['book_name'] }}</td>
+                    <td>{{ row['category'] }}</td>
+                    <td>{{ row['quantity'] }}</td>
+                    <td>{{ row['percentage'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
-    <div class="col-md-7 col-12">
-        <canvas id="myChart2"></canvas>
+    <div class="col-md-6 col-12">
+        <h3 class="text-center">Biểu đồ tần suất sách bán</h3>
+        <canvas id="bookFrequencyChart"></canvas>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    function draw(ctx, data, labels) {
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: '# Doanh thu',
-            data: data,
-            borderWidth: 1,
-            backgroundColor: ['red', 'green', 'blue', 'gold', 'brown', 'orange']
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
+    function drawChart(ctx, data, labels, labelTitle, backgroundColors, chartType = 'bar') {
+        new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: labelTitle,
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: backgroundColors
+                }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return chartType === 'pie' ? `${tooltipItem.label}: ${tooltipItem.raw} quyển` : tooltipItem.formattedValue;
+                            }
+                        }
+                    }
+                },
+                scales: chartType === 'bar' ? {
+                    y: {
+                        beginAtZero: true
+                    }
+                } : {}
             }
-          }
-        }
-      });
+        });
     }
-    let data = [];
-        let labels = [];
 
-    {% for s in stats %}
-    data.push({{ s[2] }});
-    labels.push('{{ s[1] }}')
+    // Biểu đồ doanh thu theo tháng
+    let revenueData = [];
+    let revenueLabels = [];
+    {% for row in revenue_by_category %}
+    revenueData.push({{ row['revenue'] }});
+    revenueLabels.push('{{ row['category'] }}');
     {% endfor %}
 
-    let data2 = [];
-    let labels2 = [];
-
-    {% for s in stats2 %}
-    data2.push({{ s[1] }});
-    labels2.push({{ s[0] }})
+    // Biểu đồ tần suất sách bán
+    let frequencyData = [];
+    let frequencyLabels = [];
+    {% for row in book_frequency %}
+    frequencyData.push({{ row['quantity'] }});
+    frequencyLabels.push('{{ row['book_name'] }}');
     {% endfor %}
 
     window.onload = function() {
-      const ctx = document.getElementById('myChart');
-      draw(ctx, data, labels);
-      const ctx2 = document.getElementById('myChart2');
-      draw(ctx2, data2, labels2);
-    }
+        // Vẽ biểu đồ doanh thu theo tháng (biểu đồ cột)
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        drawChart(revenueCtx, revenueData, revenueLabels, 'Doanh thu (VNĐ)', ['#e63946', '#f77f00', '#ffba08', '#43aa8b', '#3a86ff', '#8338ec']);
 
+        // Vẽ biểu đồ tần suất sách bán (biểu đồ tròn)
+        const frequencyCtx = document.getElementById('bookFrequencyChart').getContext('2d');
+        drawChart(frequencyCtx, frequencyData, frequencyLabels, 'Số lượng sách bán', ['#e63946', '#f77f00', '#ffba08', '#43aa8b', '#3a86ff', '#8338ec'], 'pie');
+    }
 </script>
 {% endblock %}

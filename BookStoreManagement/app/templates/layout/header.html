@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm navbar-dark bg-custom">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">E-BOOKSTORE</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
@@ -7,57 +7,48 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Trang chủ</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Trang chủ</a>
                 </li>
-<!--                {% for c in categories %}-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="/?category_id={{c.id}}">{{ c.name }}</a>-->
-<!--                </li>-->
-<!--                {% endfor %}-->
                 <li class="nav-item">
-                    <a class="nav-link introduce" href="/introduce">Giới thiệu</a>
+                    <a class="nav-link {% if request.path == '/introduce' %}active{% endif %}" href="/introduce">Giới thiệu</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle " href="/category" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Thể loại
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#">Thiếu nhi</a></li>
-                    <li><a class="dropdown-item" href="#">Tâm lý - Kỹ năng sống</a></li>
-                    <li><a class="dropdown-item" href="#">Kinh tế</a></li>
-                    <li><a class="dropdown-item" href="#">Văn học</a></li>
-                    <li><a class="dropdown-item" href="#">Sách ngoại ngữ</a></li>
-                    <li><a class="dropdown-item" href="#">Thể loại khác</a></li>
-                  </ul>
+                    <a class="nav-link dropdown-toggle {% if 'category_books' in request.endpoint %}active{% endif %}" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Thể loại
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        {% for category in categories %}
+                        <li>
+                            <a class="dropdown-item {% if request.args.get('category_id') == category.id %}active{% endif %}" href="{{ url_for('category_books', category_id=category.id) }}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link category" href="/category">Thể loại</a>-->
-<!--                </li>-->
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="/">
+                    <a class="nav-link text-danger {% if request.path == '/' %}active{% endif %}" href="/">
                         <img src="{{ current_user.avatar }}" width="25" class="rounded-circle" />
                         Chào {{ current_user.username }}.
                     </a>
-
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-success" href="/logout">Đăng xuất</a>
+                    <a class="nav-link text-success {% if request.path == '/logout' %}active{% endif %}" href="/logout">Đăng xuất</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="/login">Đăng nhập</a>
+                    <a class="nav-link text-danger {% if request.path == '/login' %}active{% endif %}" href="/login">Đăng nhập</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-success" href="/register">Đăng ký</a>
+                    <a class="nav-link text-success {% if request.path == '/register' %}active{% endif %}" href="/register">Đăng ký</a>
                 </li>
                 {% endif %}
-                <li class="nav-item ">
+                <li class="nav-item">
                     <a class="nav-link active" href="/cart">&#128722; <span class="badge bg-danger cart-counter">{{ cart_stats.total_quantity }}</span></a>
                 </li>
-
-
             </ul>
+
             <form method="get" action="/" class="d-flex">
                 <input class="form-control me-2" type="text" placeholder="Tìm sản phẩm..." name="kw"/>
                 <button class="btn btn-primary" type="submit">Tìm</button>

@@ -1,188 +1,364 @@
-    body {
-      background-color: #f9f9f9;
-      font-family: 'Arial', sans-serif;
-    }
-    .book-cover {
-      max-width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .price {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #d9534f;
-    }
-    .btn-buy {
-      background: linear-gradient(90deg, #ff7eb3, #ff758c);
-      color: white;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-    }
-    .btn-buy:hover {
-      background: linear-gradient(90deg, #ff758c, #ff7eb3);
-    }
-    .tab-content {
-      padding: 20px;
-      background-color: #ffffff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    .nav-tabs .nav-link {
-      font-weight: bold;
-      color: #555;
-    }
-    .nav-tabs .nav-link.active {
-      color: #28a745;
-      border-color: #28a745;
-    }
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .quantity-controls input {
-      width: 60px;
-      text-align: center;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .quantity-controls button {
-      background-color: #f0f0f0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 5px 5px;
-      cursor: pointer;
-    }
-    .quantity-controls button:hover {
-      background-color: #e0e0e0;
-    }
+body {
+  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif;
+}
 
-    /* Zoom effect styles */
-    .image-zoom-container {
-      position: relative;
-      overflow: hidden;
-    }
+.bg-custom {
+background-color: #041E4C;
+}
 
-    .image-zoom {
-      transition: transform 0.3s ease;
-      transform-origin: center;
-    }
-
-    .magnifier {
-      position: absolute;
-      border: 2px solid #ddd;
-      border-radius: 50%;
-      pointer-events: none;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      visibility: hidden;
-      width: 150px;
-      height: 150px;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+/* Mục menu */
+.navbar-nav .nav-item .nav-link {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 10px 15px;
+}
+.navbar-nav .nav-item .nav-link:hover {
+    color: #E9FBF7;
+}
+.navbar-nav .nav-item .text-danger .text- .nav-link.active {
+    color: #E9FBF7;
+}
 
 
-    .book-card {
-        background-color: #f8f9fa;
-        color: #000;
-        border-radius: 10px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        position: relative;
-        gap: 20px;
-    }
+/* Căn chỉnh tiêu đề bảng Cart */
+.table thead th {
+    text-transform: uppercase;
+    font-size: 15px;
+}
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.table-hover tbody tr:hover {
+    background-color: #041E4C;
+}
 
-    .background-left {
-        background-size: cover;
-        background-position: center;
-        flex: 0.8;
-        min-height: 400px;
-    }
+/* Category Details */
+  .quantity-controls input[type="number"] {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
 
-    .content-right {
-        flex: 1;
-        padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-        z-index: 5;
-        text-align: left;
-    }
+  .list-group-item {
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
 
-    .btn-custom {
-        background-color: #ff7f50;
-        color: white;
-    }
+  .list-group-item:last-child {
+    border-bottom: none;
+  }
 
-    .btn-custom:hover {
-        background-color: #e5673b;
-    }
+  .btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
+    transition: all 0.3s ease;
+  }
 
-    .book-cover {
-        position: absolute;
-        top: 50%;
-        left: 35%;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
+  .btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+  }
 
-    .book-cover img {
-        width: 270px;
-        height: auto;
-        border-radius: 10px;
-        transform: scale(1);
-        transition: transform 0.3s ease;
-    }
 
-    .book-cover img:hover {
-        transform: scale(1.3);
-    }
+/* Mục Chuyển DSSP*/
+.pagination .page-item.active .page-link {
+    background-color: #041E4C;
+    color: #FFFFFF;
+    border-color: #041E4C;
+    font-weight: bold;
+}
 
-    .carousel-control-next {
-    display: block; /* Đảm bảo nút Next hiển thị */
-    z-index: 20;
-    }
+.pagination .page-item .page-link {
+    color: #041E4C;
+    transition: background-color 0.3s, color 0.3s;
+}
 
-  /* Tùy chỉnh thêm màu sắc và hiệu ứng */
-  .custom-heading {
+.pagination .page-item .page-link:hover {
+    background-color: #1A3A73;
+    color: #FFFFFF;
+}
+
+/* Giá sách */
+.card-price {
+    font-size: 1.6rem; /* Tăng kích thước chữ lớn hơn bình thường */
+    font-weight: bold; /* Làm chữ đậm để nổi bật */
+    color: #e74c3c; /* Màu đỏ nổi bật cho giá */
+    text-align: center; /* Canh giữa giá */
+    margin-bottom: 15px; /* Khoảng cách dưới giá */
+    letter-spacing: 0.5px; /* Giãn nhẹ giữa các ký tự */
+}
+
+/* Định dạng thẻ sản phẩm */
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Hình ảnh sản phẩm */
+.image-wrapper {
+    height: 250px; /* Chiều cao cố định cho khung hình */
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.image-wrapper img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain; /* Giữ tỷ lệ ảnh */
+}
+
+/* Tiêu đề sách */
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 0px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Nút bấm */
+.btn {
+    font-size: 0.9rem;
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+
+.btn-outline-primary {
+    color: #041E4C;
+    border-color: #041E4C;
+}
+
+.btn-outline-primary:hover {
+    background-color: #1DB4A5;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #041E4C;
+    border-color: #B8E3DC;
+}
+
+.btn-primary:hover {
+    background-color: #1DB4A5;
+    border-color: #0056b3;
+}
+
+
+.book-cover {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #d9534f;
+}
+.btn-buy {
+  background: linear-gradient(90deg, #ff7eb3, #ff758c);
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+}
+.btn-buy:hover {
+  background: linear-gradient(90deg, #ff758c, #ff7eb3);
+}
+.tab-content {
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.nav-tabs .nav-link {
+  font-weight: bold;
+  color: #555;
+}
+.nav-tabs .nav-link.active {
+  color: #28a745;
+  border-color: #28a745;
+}
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+.quantity-controls input {
+  width: 60px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.quantity-controls button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 5px;
+  cursor: pointer;
+}
+.quantity-controls button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Zoom effect styles */
+.image-zoom-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-zoom {
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.magnifier {
+  position: absolute;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  visibility: hidden;
+  width: 150px;
+  height: 150px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+.book-card {
+    background-color: #f8f9fa;
+    color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    gap: 20px;
+}
+
+.background-left {
+    background-size: cover;
+    background-position: center;
+    flex: 0.8;
+    min-height: 400px;
+}
+
+.content-right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+    text-align: left;
+}
+
+.btn-custom {
+    background-color: #ff7f50;
+    color: white;
+}
+
+.btn-custom:hover {
+    background-color: #e5673b;
+}
+
+.book-cover {
+    position: absolute;
+    top: 50%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.book-cover img {
+    width: 270px;
+    height: auto;
+    border-radius: 10px;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.book-cover img:hover {
+    transform: scale(1.3);
+}
+
+.carousel-control-next {
+display: block; /* Đảm bảo nút Next hiển thị */
+z-index: 20;
+}
+
+/* Tùy chỉnh thêm màu sắc và hiệu ứng */
+.custom-heading {
     color: #2a3b47;
     font-weight: bold;
     text-transform: uppercase;
-  }
-  .custom-subtitle {
+}
+.custom-subtitle {
     color: #6c757d;
-  }
-  .review-card {
+}
+.review-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
     border-radius: 15px;
-  }
-  .review-card:hover {
+}
+.review-card:hover {
     transform: scale(1.05);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-  }
-  .review-star {
+}
+.review-star {
     color: #ffcc00;
-  }
-  .email-subscribe {
+}
+.email-subscribe {
     background-color: #f8f9fa;
     border-radius: 10px;
     padding: 1.5rem;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  }
-  .email-subscribe button {
-    background-color: #007bff;
+}
+.email-subscribe button {
+    background-color: #041E4C;
     color: #fff;
-  }
-  .carousel-control-prev-icon, .carousel-control-next-icon {
+    }
+.carousel-control-prev-icon, .carousel-control-next-icon {
     filter: invert(50%) sepia(75%) saturate(1000%) hue-rotate(180deg);
-  }
+}
+
+/* Scroll Top */
+#scrollToTop {
+    background-color: #041E4C;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50% ;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+#scrollToTop:hover {
+    background-color: #1DB4A5;
+}

@@ -63,33 +63,75 @@ function pay() {
 }
 
 function addComment(productId) {
+    const rating = document.getElementById("rating")?.value || 5;
+    const content = document.getElementById("comment").value;
+
+    if (!content.trim()) {
+        alert("Nội dung bình luận không được để trống!");
+        return;
+    }
+
     fetch(`/api/products/${productId}/comments`, {
         method: 'post',
         body: JSON.stringify({
-            'content': document.getElementById("comment").value
+            content: content,
+            rating: rating
         }),
-         headers: {
+        headers: {
             "Content-Type": "application/json"
         }
-    }).then(res => res.json()).then(c => {
-        let html = `
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => {
+                throw new Error(err.error || 'Đã xảy ra lỗi khi thêm bình luận!');
+            });
+        }
+        return res.json();
+    })
+    .then(c => {
+        const avatar = c.user.avatar || '/static/images/default-avatar.png';
+        const userName = c.user.name || "Anonymous";
+
+        // Sử dụng Moment.js để định dạng thời gian
+        const relativeTime = moment(c.created_date).locale("vi").fromNow();
+
+        // Tạo HTML hiển thị số sao đánh giá
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHtml += i <= c.rating
+                ? '<span class="text-warning">&#9733;</span>' // Sao vàng
+                : '<span class="text-muted">&#9733;</span>'; // Sao xám
+        }
+
+        const html = `
         <li class="list-group-item">
             <div class="row">
                 <div class="col-md-1 col-4">
-                    <img src="${ c.user.avatar }" class="img-fluid rounded-circle" />
+                    <img src="${avatar}" class="img-fluid rounded-circle" />
                 </div>
                 <div class="col-md-11 col-8">
-                    <p>${ c.content }</p>
-                    <p class="date">${ moment(c.created_date).locale("vi").fromNow() }</p>
+                    <strong>${userName}</strong>
+                    <p>${c.content}</p>
+                    <p>${starsHtml}</p> <!-- Hiển thị đánh giá sao -->
+                    <p class="date">${relativeTime}</p> <!-- Hiển thị thời gian tương đối -->
                 </div>
             </div>
         </li>
         `;
 
-        let comments = document.getElementById("comments");
+        const comments = document.getElementById("comments");
         comments.innerHTML = html + comments.innerHTML;
+
+        // Xóa nội dung trong ô nhập bình luận
+        document.getElementById("comment").value = "";
     })
+    .catch(err => {
+        alert(err.message);
+        console.error('Failed to add comment:', err);
+    });
 }
+
 
 //window.onload = function() {
 //    let buttons = document.getElementsByClassName("booking");

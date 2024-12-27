@@ -3,9 +3,9 @@ import hmac
 import urllib.parse
 
 def create_vnpay_url(order_id, total_amount, return_url):
-    vnp_url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"  # URL sandbox, đổi thành URL thật nếu dùng sản phẩm.
-    tmn_code = "LUS0AQO2"  # Thay bằng TmnCode được cấp
-    secret_key = "4S5PEP19803HUJBCDHV44JRNNMQ55MQL"  # Thay bằng HashSecret được cấp
+    vnp_url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+    tmn_code = "LUS0AQO2"
+    secret_key = "4S5PEP19803HUJBCDHV44JRNNMQ55MQL"
 
     # Dữ liệu thanh toán
     data = {

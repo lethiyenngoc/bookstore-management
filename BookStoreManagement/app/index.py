@@ -2,24 +2,64 @@ import math
 from flask import render_template, request, redirect, session, jsonify
 import dao, utils
 from app import app, login
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from app.models import UserRole
 from vnpay import create_vnpay_url
 import hashlib
 import hmac
 
 
+# @app.route("/")
+# def index():
+#     kw = request.args.get('kw')
+#     cate_id = request.args.get('category_id')
+#     page = request.args.get('page', 1)
+#
+#     prods = dao.load_products(kw=kw, category_id=cate_id, page=int(page))
+#
+#     total = dao.count_products()
+#     return render_template('index.html', products=prods,
+#                            pages=math.ceil(total/app.config["PAGE_SIZE"]))
 @app.route("/")
 def index():
     kw = request.args.get('kw')
     cate_id = request.args.get('category_id')
     page = request.args.get('page', 1)
+    sort_order = request.args.get('sort', 'asc')
 
-    prods = dao.load_products(kw=kw, category_id=cate_id, page=int(page))
+    # Xử lý giá trị 'None' thành None thực sự
+    kw = None if kw in [None, 'None', ''] else kw
+    cate_id = None if cate_id in [None, 'None', ''] else cate_id
+
+    # Load sản phẩm
+    prods = dao.load_products(kw=kw, category_id=cate_id, page=int(page), sort_order=sort_order)
 
     total = dao.count_products()
+
     return render_template('index.html', products=prods,
-                           pages=math.ceil(total/app.config["PAGE_SIZE"]))
+                           pages=math.ceil(total / app.config["PAGE_SIZE"]),
+                           sort_order=sort_order)
+
+
+@app.route('/categories/<int:category_id>')
+def category_books(category_id):
+    page = request.args.get('page', 1, type=int)  # Trang hiện tại
+    kw = request.args.get('kw')  # Từ khóa tìm kiếm nếu có
+    try:
+        books = dao.load_products2(kw=kw, category_id=category_id, page=page)
+        category = dao.get_category_by_id(category_id)
+        categories = dao.get_all_categories()
+        total = dao.count_products2(category_id=category_id)
+    except ValueError as e:
+        return str(e), 404
+
+    return render_template(
+        "category_books.html",
+        books=books.items,
+        pages=books.pages,
+        category=category,
+        categories=categories
+    )
 
 
 @app.route('/products/<int:product_id>')
@@ -28,18 +68,30 @@ def details(product_id):
                            product=dao.get_product_by_id(product_id),
                            comments=dao.load_comments(product_id))
 
-
 @app.route('/api/products/<int:product_id>/comments', methods=['post'])
 def add_comment(product_id):
+    # Trích xuất thông tin từ request
     content = request.json.get('content')
-    c = dao.add_comment(content=content, product_id=product_id)
-    return jsonify({
-        'content': c.content,
-        'created_date': c.created_date,
-        'user': {
-            'avatar': c.user.avatar
-        }
-    })
+    rating = request.json.get('rating', 5)
+
+    # Kiểm tra nội dung bình luận
+    if not content or not content.strip():
+        return jsonify({"error": "Nội dung bình luận không được để trống"}), 400
+
+    try:
+        # Thêm bình luận vào cơ sở dữ liệu
+        c = dao.add_comment(content=content.strip(), product_id=product_id, user_id=current_user.id, rating=rating)
+        return jsonify({
+            'content': c.content,
+            'rating': c.rating,
+            'created_date': c.created_date.isoformat(),  # Trả về thời gian ISO
+            'user': {
+                'name': c.user.name,
+                'avatar': c.user.avatar if c.user.avatar else '/static/images/default-avatar.png'
+            }
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @app.route('/introduce')
@@ -101,21 +153,21 @@ def register_process():
 
 @app.route('/api/carts', methods=['post'])
 def add_to_cart():
-    # """
-    # {
-    #     "1": {
-    #         "id": "1",
-    #         "name": "iPhone",
-    #         "price": 30,
-    #         "quantity": 2
-    #     }, "2": {
-    #         "id": "2",
-    #         "name": "iPhone",
-    #         "price": 30,
-    #         "quantity": 1
-    #     }
-    # }
-    # """
+    """
+    {
+        "1": {
+            "id": "1",
+            "name": "Tấm Cám",
+            "price": 60000,
+            "quantity": 1
+        }, "2": {
+            "id": "2",
+            "name": "Hoàng tử bé",
+            "price": 65000,
+            "quantity": 1
+        }
+    }
+    """
     cart = session.get('cart')
     if not cart:
         cart = {}
@@ -204,7 +256,7 @@ def load_user(user_id):
 def common_response_data():
     return {
         'categories': dao.load_categories(),
-        'cart_stats': utils.cart_stats(session.get('cart'))
+        'cart_stats': utils.stats_cart(session.get('cart'))
     }
 
 @app.route('/process_payment', methods=['POST'])

@@ -80,36 +80,32 @@
 <!--End Title-->
 
 {% if products %}
-{% if pages > 1 %}
-<ul class="pagination mt-1">
-    {% for i in range(1, pages + 1) %}
-    <li class="page-item"><a class="page-link" href="/?page={{ i }}">{{ i }}</a></li>
-    {% endfor %}
-</ul>
-{% endif %}
 
-<div class="d-flex justify-content-end mb-1">
+
+<div class="d-flex justify-content-end mt-0">
     <div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             Sắp xếp theo giá
         </button>
         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-            <li><a class="dropdown-item" href="#" onclick="sortProducts('asc')">Giá tăng dần</a></li>
-            <li><a class="dropdown-item" href="#" onclick="sortProducts('desc')">Giá giảm dần</a></li>
+            <li><a class="dropdown-item" href="/?sort=asc&kw={{ request.args.get('kw') }}&category_id={{ request.args.get('category_id') }}&page={{ request.args.get('page', 1) }}">Giá tăng dần</a></li>
+            <li><a class="dropdown-item" href="/?sort=desc&kw={{ request.args.get('kw') }}&category_id={{ request.args.get('category_id') }}&page={{ request.args.get('page', 1) }}">Giá giảm dần</a></li>
         </ul>
     </div>
 </div>
 
 <div class="row">
     {% for p in products %}
-    <div class="col-md-3 col-12 p-2">
-        <div class="card">
-            <img class="card-img-top" src="{{ p.image }}" alt="{{ p.name }}">
+    <div class="col-md-3 col-sm-6 col-12 p-3 d-flex">
+        <div class="card product-card w-100">
+            <div class="image-wrapper">
+                <img class="card-img-top" src="{{ p.image }}" alt="{{ p.name }}">
+            </div>
             <div class="card-body">
                 <h4 class="card-title">{{ p.name }}</h4>
-                <p class="card-text">{{ p.price }} VNĐ</p>
-                <a href="/products/{{ p.id }}" class="btn btn-primary">Xem chi tiết</a>
-                <button class="btn btn-danger" onclick="addToCart({{ p.id }}, '{{ p.name }}', {{ p.price }})">Đặt hàng</button>
+                <p class="card-price">{{ "{:,.0f}".format(p.price) }} VNĐ</p>
+                <a href="/products/{{ p.id }}" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                <button class="btn btn-primary w-100 mt-2" onclick="addToCart({{ p.id }}, '{{ p.name }}', {{ p.price }})">Đặt hàng</button>
             </div>
         </div>
     </div>
@@ -118,51 +114,70 @@
 {% else %}
 <div class="alert alert-info mt-1">KHÔNG có sản phẩm nào.</div>
 {% endif %}
+
+<!--Dãy page-->
+{% if pages > 1 %}
+<ul class="pagination justify-content-center mt-2">
+    {% for i in range(1, pages + 1) %}
+    <li class="page-item {% if i == request.args.get('page', 1) | int == i %}active{% endif %}">
+        <a class="page-link" href="/?page={{ i }}&sort={{ sort_order }}&kw={{ request.args.get('kw', '') }}&category_id={{ request.args.get('category_id', '') }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<!--End page-->
+
 <div class="d-grid gap-2 col-6 mx-auto my-4">
-  <button class="btn btn-outline-secondary" type="button">Xem thêm</button>
+  <button class="btn btn-outline-dark" type="button">Xem thêm</button>
 </div>
+
 
 <div class="container my-5">
     <h2 class="text-center mb-4 custom-heading">Danh Mục Thể Loại Sách</h2>
     <div class="d-flex justify-content-center gap-4 flex-wrap">
-        <div class="card h-100" style="width: 12rem;" onclick="showBooks('thieuNhi')">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks(1)">
             <img src="https://cdn0.fahasa.com/media/catalog/product/8/9/8935244868999.jpg?_gl=1*wjtwmp*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODU4Ni4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg1ODcuMTkuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Thiếu Nhi">
             <div class="card-body text-center">
                 <h5 class="card-title">Thiếu Nhi</h5>
             </div>
         </div>
-        <div class="card h-100" style="width: 12rem;" onclick="showBooks('tamLy')">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks(2)">
             <img src="https://cdn0.fahasa.com/media/catalog/product/8/9/8935278605546.jpg?_gl=1*2k7hhh*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODMxNS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzgzMTcuMzcuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Tâm Lý - Kỹ Năng Sống">
             <div class="card-body text-center">
                 <h5 class="card-title">Tâm Lý - Kỹ Năng Sống</h5>
             </div>
         </div>
-        <div class="card h-100" style="width: 12rem;" onclick="showBooks('kinhTe')">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks(3)">
             <img src="https://cdn0.fahasa.com/media/catalog/product/b/i/bia-truoc-chien-tranh-tien-te-phan-1-1.jpg?_gl=1*1v7xf61*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODUxNS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg1MTcuMTguMC4yMDI1MzE5NzYy" class="card-img-top" alt="Kinh Tế">
             <div class="card-body text-center">
                 <h5 class="card-title">Kinh Tế</h5>
             </div>
         </div>
-        <div class="card h-100" style="width: 12rem;" onclick="showBooks('vanHoc')">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks(4)">
             <img src="https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-in-g_c-nh_-c_-n_ng.jpg?_gl=1*17r6hsz*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODE3MS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzgxNzMuNDYuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Văn Học">
             <div class="card-body text-center">
                 <h5 class="card-title">Văn Học</h5>
             </div>
         </div>
-        <div class="card h-100" style="width: 12rem;" onclick="showBooks('ngoaiNgu')">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks(5)">
             <img src="https://cdn0.fahasa.com/media/catalog/product/9/7/9786043775662.jpg?_gl=1*c7uc1o*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODcwNS4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg3MDYuMTQuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Sách Ngoại Ngữ">
             <div class="card-body text-center">
                 <h5 class="card-title">Sách Ngoại Ngữ</h5>
             </div>
         </div>
-        <div class="card h-100" style="width: 12rem;" onclick="showBooks('theLoaiKhac')">
+        <div class="card h-100" style="width: 12rem;" onclick="showBooks(6)">
             <img src="https://cdn0.fahasa.com/media/catalog/product/n/e/nexus-b_a-m_m_1.jpg?_gl=1*11t376c*_ga*MTkwNTA4NjMzLjE3MjQ5MzczMTg.*_ga_D3YYPWQ9LN*MTczNDMzNzUxMy45LjEuMTczNDMzODgxMi4wLjAuMA..*_gcl_au*MTEzNTUyMDc0NS4xNzMzNzI3NTA3*_ga_460L9JMC2G*MTczNDMzNzUxMy4xNC4xLjE3MzQzMzg4MTQuMzcuMC4yMDI1MzE5NzYy" class="card-img-top" alt="Thể Loại Khác">
             <div class="card-body text-center">
                 <h5 class="card-title">Thể Loại Khác</h5>
             </div>
         </div>
     </div>
-
+    <script>
+        function showBooks(categoryId) {
+            const url = `/categories/${categoryId}`;
+            window.location.href = url;
+        }
+    </script>
 
 <div class="container mt-5">
   <!-- Tiêu đề chính -->
@@ -272,4 +287,30 @@
     </div>
   </div>
 </div>
+
+
+    <!-- Nút cuộn lên đầu trang -->
+<button id="scrollToTop" style="position: fixed; bottom: 20px; right: 20px; display: none;">
+    <i class="fa-sharp fa-solid fa-angle-up"></i>
+</button>
+
+<script>
+    // Hiển thị nút khi cuộn xuống
+    window.addEventListener("scroll", function() {
+        const scrollToTopBtn = document.getElementById("scrollToTop");
+        if (document.documentElement.scrollTop > 200 || document.body.scrollTop > 200) {
+            scrollToTopBtn.style.display = "block";
+        } else {
+            scrollToTopBtn.style.display = "none";
+        }
+    });
+
+    // Cuộn lên đầu trang khi nút được bấm
+    document.getElementById("scrollToTop").addEventListener("click", function() {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+</script>
 {% endblock %}
