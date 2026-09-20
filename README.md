@@ -4,46 +4,38 @@ A web-based bookstore management system developed as a university team project. 
 
 ## 📌 Project Overview
 
-The Bookstore Management System is designed to support bookstore operations, including book management, inventory management, customer management, book ordering, sales, invoice management, and revenue reporting.
-
-The project helped the team gain practical experience in analyzing business requirements, designing system workflows, developing web applications, and working collaboratively with GitHub.
+The Bookstore Management System supports bookstore operations, including book management, inventory management, customer management, book ordering, sales, invoice management, and revenue reporting.
 
 ## 🎯 Project Objectives
 
-- Analyze and document the requirements of a bookstore management system.
-- Identify system actors and define functional requirements.
-- Design system models using UML diagrams.
-- Design the relational database and relationships between entities.
+- Analyze system requirements and business workflows.
+- Design UML diagrams and relational databases.
 - Develop a web-based bookstore management application.
-- Improve teamwork, source code management, and system development skills.
+- Improve teamwork and source code management skills.
 
-## 👥 Team Members
+## 👥 Team
 
-- Team Project (3 members)
+- Team 3
 
 ## 🛠️ Technologies & Tools
 
 ### Backend & Database
-
 - Python
 - Flask
 - SQLAlchemy ORM
 - MySQL
 
 ### Frontend & Visualization
-
 - HTML/CSS
 - Chart.js
 
 ### System Analysis & Design
-
 - Astah UML
 - Draw.io
 - Figma
 - MockFlow
 
 ### Development & Deployment
-
 - Git
 - GitHub
 - Cloudinary
@@ -51,153 +43,105 @@ The project helped the team gain practical experience in analyzing business requ
 
 ## 📋 System Roles
 
-The system includes different user roles:
-
-- **Customer:** Browse books, search for books, place orders, and make payments.
-- **Sales Staff:** Manage book sales, invoices, and customer information.
-- **Warehouse Manager:** Manage book inventory and book imports.
-- **Administrator:** Manage system regulations and view revenue reports.
+- **Customer:** Browse books, place orders, and make payments.
+- **Sales Staff:** Manage sales, invoices, and customer information.
+- **Warehouse Manager:** Manage inventory and book imports.
+- **Administrator:** Manage system regulations and revenue reports.
 
 ## ⚙️ Main Features
 
 ### 1. Book Management
-
-- View the list of books.
-- Search for books.
-- View book details.
-- Browse books by category.
+- View, search, and manage books.
+- View book details and browse by category.
 - Sort books by price.
-- Manage book information.
 
 ### 2. Inventory Management
-
-- Add books to the inventory.
-- Update inventory information.
-- Check inventory quantity conditions.
-- Store information about book imports.
+- Add and update inventory information.
+- Check inventory quantities.
+- Manage book import records.
 
 ### 3. Customer Management
-
-- View customer information.
-- Add customer records.
-- Edit customer information.
-- Delete customer records.
+- Add, edit, delete, and view customer information.
 
 ### 4. Book Ordering
-
 - Search and select books.
 - Add books to the shopping cart.
-- Select the quantity of books.
-- Place book orders.
-- Choose a payment method.
+- Place orders and choose payment methods.
 - Automatically cancel unpaid orders after the defined time limit.
 
 ### 5. Sales & Invoice Management
-
-- Record book sales.
-- Check book availability.
+- Record book sales and check availability.
 - Calculate order totals.
-- Process payment information.
-- Create and store invoices.
-- Update inventory after sales.
+- Create invoices and update inventory.
 
 ### 6. Reports & Statistics
-
-- View revenue reports.
-- View book sales statistics.
+- View revenue reports and sales statistics.
 - Filter reports by month.
-- Display statistical information using tables and charts.
+- Display data using tables and charts.
 
 ### 7. User Authentication
-
-- User registration.
-- User login.
-- Role-based access for different users.
-- Upload a profile image during registration.
+- User registration and login.
+- Role-based access control.
+- Profile image upload.
 
 ### 8. Product Reviews
-
-- Rate books using a star rating.
-- Write comments about books.
-- Store reviews in the database.
+- Rate books using star ratings.
+- Write and store book reviews.
 
 ## 📊 System Analysis & Design
 
-The project includes analysis and design activities such as:
-
 ### Requirements Analysis
-
-- Identify system actors.
-- Define use cases.
-- Describe preconditions and postconditions.
-- Document main flows, alternative flows, and exception flows.
+- Identify system actors and use cases.
+- Define preconditions and postconditions.
+- Document main, alternative, and exception flows.
 
 ### UML Diagrams
-
 - Use Case Diagram
 - Class Diagram
 - Activity Diagram
 - Sequence Diagram
 
 ### Database Design
-
 - Relational Database Schema
 - Entity Relationships
 - Database Table Descriptions
-- Relationship Analysis between System Entities
 
 ### Interface & Process Design
-
 - User interface design.
 - Screen navigation flows.
-- Processing specifications for interface actions.
-- Input, update, delete, save, and cancel operations.
+- Interface processing specifications.
 
 ## 🔄 Example Business Processes
 
 ### Book Ordering Process
-
 1. The customer searches for and selects a book.
 2. The system checks the customer's login status.
 3. The customer selects a payment method.
-4. The system processes the order.
-5. The order status is updated.
-6. The system automatically checks unpaid orders according to the defined time limit.
+4. The system processes the order and updates its status.
+5. The system checks unpaid orders according to the defined time limit.
 
 ### Book Inventory Process
-
 1. The warehouse manager enters book information.
 2. The system checks inventory and import quantity conditions.
-3. The system updates the inventory.
-4. The system stores the import record.
-5. The system displays the processing result.
+3. The system updates inventory and stores the import record.
 
 ### Sales Process
-
-1. The staff selects or scans a book.
-2. The system checks book availability.
-3. The staff enters the quantity.
-4. The system calculates the order value.
-5. The payment is processed.
-6. The system creates an invoice and updates inventory.
+1. The staff selects a book and enters the quantity.
+2. The system checks availability and calculates the order value.
+3. The payment is processed.
+4. The system creates an invoice and updates inventory.
 
 ## 🖥️ Project Documentation
 
-The project documentation includes:
-
 - Use Case Specifications
 - System Architecture
-- Class Diagram
-- Activity Diagram
-- Sequence Diagram
+- UML Diagrams
 - Relational Database Schema
 - Interface Design
 - Interface Processing Specifications
 - System Function Demonstrations
 
 ## 📈 Learning Outcomes
-
-Through this project, the team gained experience in:
 
 - System requirements analysis.
 - UML modeling and system design.
@@ -207,20 +151,3 @@ Through this project, the team gained experience in:
 - Data visualization using Chart.js.
 - Interface design using Figma and MockFlow.
 - Version control and teamwork using GitHub.
-
-## ⚠️ Current Limitations
-
-- Some database queries require further performance optimization.
-- Advanced features such as online payment integration are not fully completed.
-- Third-party API integrations have not been implemented.
-- Error handling and performance optimization require further improvement.
-- Practical experience with production-level deployment remains limited.
-
-## 🚀 Future Improvements
-
-- Complete online payment integration.
-- Add automated email or SMS notifications.
-- Improve database query performance.
-- Strengthen application security.
-- Improve error handling.
-- Enhance system scalability and deployment capabilities.
