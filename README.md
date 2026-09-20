@@ -27,6 +27,7 @@ The Bookstore Management System supports bookstore operations, including book ma
 
 ### Frontend & Visualization
 - HTML/CSS
+- JavaScript
 - Chart.js
 
 ### System Analysis & Design
